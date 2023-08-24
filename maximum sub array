@@ -1,0 +1,41 @@
+#include <stdio.h>
+
+int maxSubarraySum(int arr[], int n) {
+    int max_kadane = arr[0];
+    int max_wrap = 0, total = 0;
+
+    for (int i = 0; i < n; i++) {
+        total += arr[i];
+        if (max_kadane < 0)
+            max_kadane = arr[i];
+        else if (max_kadane < arr[i])
+            max_kadane = arr[i];
+
+        if (max_wrap < total)
+            max_wrap = total;
+    }
+
+    // Inverting sign of array elements and finding max subarray sum for circular part
+    for (int i = 0; i < n; i++)
+        arr[i] = -arr[i];
+
+    total = 0;
+    for (int i = 0; i < n; i++) {
+        total += arr[i];
+        if (total < 0)
+            total = 0;
+        else if (max_wrap < total)
+            max_wrap = total;
+    }
+
+    return (max_wrap > (total + max_kadane)) ? max_wrap : (total + max_kadane);
+}
+
+int main() {
+    int arr[] = {5, -3, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int max_sum = maxSubarraySum(arr, n);
+
+    printf("Maximum sum circular subarray is: %d\n", max_sum);
+    return 0;
+}
