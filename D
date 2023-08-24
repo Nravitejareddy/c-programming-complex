@@ -1,0 +1,77 @@
+#include <stdio.h>
+
+typedef struct Complex {
+    float real;
+    float imag;
+} Complex;
+
+Complex add(Complex num1, Complex num2) {
+    Complex result;
+    result.real = num1.real + num2.real;
+    result.imag = num1.imag + num2.imag;
+    return result;
+}
+
+Complex subtract(Complex num1, Complex num2) {
+    Complex result;
+    result.real = num1.real - num2.real;
+    result.imag = num1.imag - num2.imag;
+    return result;
+}
+
+Complex multiply(Complex num1, Complex num2) {
+    Complex result;
+    result.real = num1.real * num2.real - num1.imag * num2.imag;
+    result.imag = num1.real * num2.imag + num1.imag * num2.real;
+    return result;
+}
+
+Complex divide(Complex num1, Complex num2) {
+    Complex result;
+    float denominator = num2.real * num2.real + num2.imag * num2.imag;
+    result.real = (num1.real * num2.real + num1.imag * num2.imag) / denominator;
+    result.imag = (num1.imag * num2.real - num1.real * num2.imag) / denominator;
+    return result;
+}
+
+int main() {
+    Complex num1, num2, result;
+    int choice;
+
+    printf("Enter real and imaginary parts of the first complex number: ");
+    scanf("%f %f", &num1.real, &num1.imag);
+
+    printf("Enter real and imaginary parts of the second complex number: ");
+    scanf("%f %f", &num2.real, &num2.imag);
+
+    printf("Menu:\n");
+    printf("1. Addition\n");
+    printf("2. Subtraction\n");
+    printf("3. Multiplication\n");
+    printf("4. Division\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            result = add(num1, num2);
+            printf("Result: %.2f + %.2fi\n", result.real, result.imag);
+            break;
+        case 2:
+            result = subtract(num1, num2);
+            printf("Result: %.2f + %.2fi\n", result.real, result.imag);
+            break;
+        case 3:
+            result = multiply(num1, num2);
+            printf("Result: %.2f + %.2fi\n", result.real, result.imag);
+            break;
+        case 4:
+            result = divide(num1, num2);
+            printf("Result: %.2f + %.2fi\n", result.real, result.imag);
+            break;
+        default:
+            printf("Invalid choice\n");
+    }
+
+    return 0;
+}
