@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+int max(int a, int b) {
+    return a > b ? a : b;
+}
+
+int longestSubarrayWithSumK(int arr[], int n, int k) {
+    int maxLength = 0;
+    int sum = 0;
+    int prefixSum[n];
+    
+    for (int i = 0; i < n; i++) {
+        sum += arr[i];
+        prefixSum[i] = sum;
+        
+        if (sum == k) {
+            maxLength = i + 1;
+        }
+    }
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            int currentSum = prefixSum[j] - prefixSum[i];
+            if (currentSum == k) {
+                maxLength = max(maxLength, j - i);
+            }
+        }
+    }
+    
+    return maxLength;
+}
+
+int main() {
+    int arr[] = {10, 5, 2, 7, 1, 9};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int k = 15;
+    
+    int result = longestSubarrayWithSumK(arr, n, k);
+    printf("Length of the longest subarray with sum %d is %d\n", k, result);
+    
+    return 0;
+}
