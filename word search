@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+#define ROWS 3
+#define COLS 4
+
+bool isSafe(int row, int col, int prevRow, int prevCol) {
+    return (row >= 0 && row < ROWS && col >= 0 && col < COLS && (row != prevRow || col != prevCol));
+}
+
+bool searchWord(char board[ROWS][COLS], int row, int col, char* word, int index) {
+    if (index == strlen(word)) {
+        return true;
+    }
+
+    if (isSafe(row, col, -1, -1) && board[row][col] == word[index]) {
+        char temp = board[row][col];
+        board[row][col] = ' ';
+
+        bool found = searchWord(board, row + 1, col, word, index + 1) ||
+                     searchWord(board, row - 1, col, word, index + 1) ||
+                     searchWord(board, row, col + 1, word, index + 1) ||
+                     searchWord(board, row, col - 1, word, index + 1);
+
+        board[row][col] = temp;
+
+        return found;
+    }
+
+    return false;
+}
+
+bool exist(char board[ROWS][COLS], char* word) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (board[i][j] == word[0] && searchWord(board, i, j, word, 0)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int main() {
+    char board[ROWS][COLS] = {
+        {'A', 'B', 'C', 'E'},
+        {'S', 'F', 'C', 'S'},
+        {'A', 'D', 'E', 'E'}
+    };
+
+    char* word1 = "ABCCED";
+    char* word2 = "SEE";
+
+    if (exist(board, word1)) {
+        printf("Word '%s' exists in the board.\n", word1);
+    } else {
+        printf("Word '%s' does not exist in the board.\n", word1);
+    }
+
+    if (exist(board, word2)) {
+        printf("Word '%s' exists in the board.\n", word2);
+    } else {
+        printf("Word '%s' does not exist in the board.\n", word2);
+    }
+
+    return 0;
+}
