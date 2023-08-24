@@ -1,0 +1,56 @@
+#include <stdio.h>
+
+#define ROW 5
+#define COL 5
+
+int matrix[ROW][COL];
+
+void markIsland(int row, int col) {
+    if (row < 0 || row >= ROW || col < 0 || col >= COL || matrix[row][col] == 0) {
+        return;
+    }
+
+    matrix[row][col] = 0; // Mark the cell as visited
+
+    // Recursively check all adjacent cells
+    markIsland(row - 1, col); // Up
+    markIsland(row + 1, col); // Down
+    markIsland(row, col - 1); // Left
+    markIsland(row, col + 1); // Right
+}
+
+int countIslands() {
+    int count = 0;
+    for (int row = 0; row < ROW; ++row) {
+        for (int col = 0; col < COL; ++col) {
+            if (matrix[row][col] == 1) {
+                ++count;
+                markIsland(row, col);
+            }
+        }
+    }
+    return count;
+}
+
+int main() {
+    // Input matrix
+    int input[ROW][COL] = {
+        {1, 1, 0, 0, 0},
+        {1, 1, 0, 1, 1},
+        {0, 0, 0, 1, 1},
+        {0, 0, 0, 0, 0},
+        {1, 1, 0, 0, 0}
+    };
+
+    // Copy input to the matrix
+    for (int i = 0; i < ROW; ++i) {
+        for (int j = 0; j < COL; ++j) {
+            matrix[i][j] = input[i][j];
+        }
+    }
+
+    int numIslands = countIslands();
+    printf("Number of islands: %d\n", numIslands);
+
+    return 0;
+}
